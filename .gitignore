@@ -1,1 +1,6 @@
+# make targets
+obj/
+main
+
+# vim
 Users/
