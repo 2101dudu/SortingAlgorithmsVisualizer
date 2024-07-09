@@ -16,10 +16,31 @@ void swap_and_highlight(LIST in, int i, int j, int* num_swaps) {
     int indexes[2] = {i, j}; 
     swap(&in, i, j);
 
-    highlight_nodes(in, indexes, "Swap!");
+    highlight_nodes(in, indexes, "Swap!", -1);
 
     (*num_swaps)++;
 }
+
+void insertion_sort(LIST in) {
+    if(in.list == NULL || in.list_size < 0) {
+        perror("[ERROR 20] insertion_sort - NULL list");
+        return;
+    }
+
+    int j;
+    NODE index;
+    for(int i=1; i<in.list_size; i++) {
+       index = in.list[i];
+       j = i - 1;
+
+       while(j >= 0 && compare_nodes(in.list[j], index) > 0) {
+           in.list[j+1] = in.list[j];
+           j = j - 1;
+       }
+       in.list[j+1] = index;
+    }
+}
+
 
 void selection_sort(LIST in) {
     if(in.list == NULL || in.list_size < 0) {
@@ -68,7 +89,7 @@ void step_bubble_sort(LIST in) {
             int indexes[2] = {j, j+1}; 
 
             printf("--------Bubble Sort--------\n");
-            highlight_nodes(in, indexes, NULL);
+            highlight_nodes(in, indexes, NULL, -1);
 
             if(compare_nodes(in.list[j], in.list[j+1]) > 0) swap_and_highlight(in, j, j+1, &num_swaps);
             
@@ -94,15 +115,15 @@ void step_selection_sort(LIST in) {
             int indexes[2] = {i, j}; 
 
             printf("--------Selection Sort--------\n");
-            highlight_nodes(in, indexes, NULL);
+            highlight_nodes(in, indexes, NULL, -1);
 
             if(compare_nodes(in.list[j], in.list[min_index]) < 0) {
                 min_index = j;
 
                 int indexes[1] = {min_index}; 
                 char message[40];
-                sprintf(message, "New lower element");
-                highlight_nodes(in, indexes, message);
+                sprintf(message, "is the new lower element");
+                highlight_nodes(in, indexes, message, j);
             }
             printf("------------------------------\n");
             getchar();
@@ -112,7 +133,7 @@ void step_selection_sort(LIST in) {
             int indexes[2] = {i, min_index}; 
 
             printf("--------Selection Sort--------\n");
-            highlight_nodes(in, indexes, "Because of new lower element");
+            highlight_nodes(in, indexes, "Because of new lower element", -1);
 
             swap_and_highlight(in, i, min_index, &num_swaps);
             printf("------------------------------\n");
@@ -121,4 +142,55 @@ void step_selection_sort(LIST in) {
     }
 
     print_info(num_swaps, num_comparisons, in.list_size);
+}
+
+void step_insertion_sort(LIST in) {
+    if(in.list == NULL || in.list_size < 0) {
+        perror("[ERROR 21] step_insertion_sort - NULL list");
+        return;
+    }
+
+    int j;
+    NODE index;
+    for(int i=1; i<in.list_size; i++) {
+        int swapped = 0;
+
+        index = in.list[i];
+        j = i - 1;
+
+        int indexes[2] = {j, i}; 
+
+        printf("--------Selection Sort--------\n");
+        highlight_nodes(in, indexes, NULL, -1);
+
+        while(j >= 0 && compare_nodes(in.list[j], index) > 0) {
+            swapped = 1;
+
+            int index[1] = {j}; 
+
+            in.list[j+1] = in.list[j];
+            j = j - 1;
+
+            char message[40];
+            sprintf(message, "moved to a new place!");
+            highlight_nodes(in, index, message, j+1);
+
+            getchar();
+        }
+        printf("------------------------------\n");
+        if(swapped == 1) {
+            printf("--------Selection Sort--------\n");
+
+            in.list[j+1] = index;
+
+            int index[1] = {j+1}; 
+
+            char message[40];
+            sprintf(message, "final stop!");
+            highlight_nodes(in, index, message, j+1);
+
+            printf("------------------------------\n");
+            getchar();
+        }
+    }
 }

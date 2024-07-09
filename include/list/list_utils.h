@@ -23,7 +23,7 @@ typedef struct list {
 
 void print_list(LIST list);
 
-void highlight_nodes(LIST in, int* index, char* message);
+void highlight_nodes(LIST in, int* index, char* message, int print_nodes);
 
 void print_info(int num_swaps, int num_comparisons, int list_size);
 

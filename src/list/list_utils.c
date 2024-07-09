@@ -15,6 +15,13 @@ void print_node(NODE node) {
     }
 }
 
+void print_node_message(NODE node, char* message) {
+    printf("(");
+    print_node(node);
+    printf("%s", message);
+    printf(")");
+}
+
 void print_list(LIST in) {
     if(in.list == NULL || in.list_size <= 0) {
         perror("[ERROR 1] print_list - NULL list");
@@ -31,18 +38,18 @@ void print_info(int num_swaps, int num_comparisons, int list_size) {
     printf("------------Info-----------\n");
     printf("Number of swaps: %d\n", num_swaps);
     printf("Number of comparisons: %d\n", num_comparisons);
-    printf("Length-to-comparisons index: %.3f\n", (double) num_comparisons/list_size);
+    printf("Swaps-to-comparisons index: %.3f\n", (double) num_comparisons/num_swaps);
     printf("---------------------------\n");
 }
 
-void highlight_nodes(LIST in, int* index, char* message) {
+void highlight_nodes(LIST in, int* index, char* message, int print_nodes) {
     if(in.list == NULL || in.list_size <= 0 || index == NULL) {
         perror("[ERROR 2] highlight_number - NULL list");
         return;
     }
         
     int j=0;
-    for(int i=0; i<in.list_size; i++) {
+    for(int i=0; i<in.list_size && j < *(&index + 1) - index; i++) {
         if(i == index[j]) {
             printf("$");
             print_node(in.list[i]);
@@ -51,7 +58,8 @@ void highlight_nodes(LIST in, int* index, char* message) {
         else print_node(in.list[i]);
     }
 
-    if(message != NULL) printf("(%s)", message);
+    if(print_nodes >= 0) print_node_message(in.list[print_nodes], message);
+    else if(message != NULL) printf("(%s)", message);
     putchar('\n');
 }
 

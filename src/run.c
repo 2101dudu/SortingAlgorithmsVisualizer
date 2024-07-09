@@ -41,18 +41,17 @@ int run(char** opcoes, int size) {
 
 
 int main(int argc, char **argv) {
-
-    int int_elements[] = {1, 4, 2, 6, 7, 3};
-    void *int_ptrs[6];
+    //int int_elements[] = {1, 4, 2, 6, 7, 3};
+    char *str_elements[] = {"cherry", "banana", "date", "fig", "apple", "grape"};
+    void *str_ptrs[6];
     for (size_t i = 0; i < 6; ++i) {
-        int_ptrs[i] = &int_elements[i];
+        str_ptrs[i] = str_elements[i];
     }
+    LIST new = create_node_list(str_ptrs, 6, STRING);
 
-    LIST new = create_node_list(int_ptrs, 6, INT);
 
-
-    char* opcoes[2] = {"Bubble sort", "Selection sort"};
-    int op = run(opcoes, 2);
+    char* opcoes[3] = {"Bubble sort", "Selection sort", "Insertion sort"};
+    int op = run(opcoes, 3);
 
     switch(op) {
         case 1:
@@ -61,8 +60,13 @@ int main(int argc, char **argv) {
         case 2:
             step_selection_sort(new);
             break;
+        case 3:
+            step_insertion_sort(new);
+            break;
         default: break;
     }
+
+    free_node_list(&new);
 
     return 0;
 }
